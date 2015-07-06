@@ -14,16 +14,16 @@
         document.addEventListener( 'pause', onPause.bind( this ), false );
         document.addEventListener( 'resume', onResume.bind( this ), false );
         
-        
+        $('#inputContainerForm').validate();
 
         $('#inputContainerForm').submit(function (event) {
             // cancels the form submission
             event.preventDefault();
 
-            //save data
-            UploadData();
-
-            
+            if ($('#inputContainerForm').valid()) {
+                //save data
+                UploadData();
+            }
         });
 
         WinJS.UI.processAll();

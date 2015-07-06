@@ -791,14 +791,21 @@
     "plugins\\org.apache.cordova.camera\\plugin.xml",
     "www\\jquery.mobile.rtl\\css\\themes\\default\\images\\icons-png\\check-white.png",
     "plugins\\org.apache.cordova.camera\\src\\ubuntu\\camera.h",
-    "config.xml"
+    "config.xml",
+    "www\\Jquery\\jquery.validate-vsdoc.js",
+    "www\\Jquery\\jquery.validate.min.js",
+    "www\\Jquery\\jquery.validate.js"
   ],
-  "deletedFilesIos": [],
+  "deletedFilesIos": [
+    "Scripts\\jquery.validate-vsdoc.js",
+    "Scripts\\jquery.validate.js",
+    "Scripts\\jquery.validate.min.js"
+  ],
   "addedPluginsIos": [],
   "deletedPluginsIos": [],
   "changedFiles": [
     "plugins\\android.json",
-    "config.xml"
+    "www\\index.html"
   ],
   "deletedFiles": [],
   "addedPlugins": [],

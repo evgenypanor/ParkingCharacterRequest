@@ -14,15 +14,38 @@
         document.addEventListener( 'pause', onPause.bind( this ), false );
         document.addEventListener( 'resume', onResume.bind( this ), false );
         
-        $('#inputContainerForm').validate();
+        //$('#inputContainerForm').validate();
 
-        $('#inputContainerForm').submit(function (event) {
-            // cancels the form submission
-            event.preventDefault();
+        //$('#inputContainerForm').submit(function (event) {
+        //    // cancels the form submission
+        //    event.preventDefault();
 
-            if ($('#inputContainerForm').valid()) {
-                //save data
+        //    if ($('#inputContainerForm').valid()) {
+        //        //save data
+        //        UploadData();
+        //    }
+        //});
+
+
+        $('#inputContainerForm').validate({ // initialize the plugin
+            rules: {
+                firstName: {
+                    required: true
+                },
+                lastName: {
+                    required: true
+                },
+                tz: {
+                    required: true
+                },
+                homeNum: {
+                    required: true
+                }
+            },
+            submitHandler: function (form) { 
+                alert('valid form submitted');
                 UploadData();
+                return false; // for demo
             }
         });
 
@@ -161,7 +184,7 @@ function UploadData() {
     //jsonRes.push(itm);
 
     //itm = {}
-    itm["email"] = $("#email").val();
+    itm["email"] = $("#useremail").val();
     //jsonRes.push(itm);
 
     //itm = {}

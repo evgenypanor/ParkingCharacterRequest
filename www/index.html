@@ -28,7 +28,7 @@
     <script src="scripts/index.js"></script>
 
     <form id="inputContainerForm" onsubmit="return false;">
-        <div id="mainDiv" style="display: -ms-box;">
+        <div id="mainDiv">
             <div id="appHeader">
                 <h2 class="win-h2">בקשה לתו חניה</h2>
             </div>
@@ -166,8 +166,9 @@
     <script>
         function CaptureImage() {
             navigator.camera.getPicture(onSuccess, onFail, {
-                quality: 50,
-                destinationType: Camera.DestinationType.FILE_URI,
+                quality: 40,
+                sourceType : Camera.PictureSourceType.CAMERA,
+                destinationType: Camera.DestinationType.DATA_URL,
                 allowEdit: true,
                 encodingType: Camera.EncodingType.JPEG,
                 saveToPhotoAlbum: false
@@ -176,7 +177,7 @@
 
         function onSuccess(imageURI) {
             var image = document.getElementById('lisenceImage');
-            image.src = imageURI;
+            image.src = "data:image/jpeg;base64," + imageURI;
         }
 
         function onFail(message) {

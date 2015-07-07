@@ -26,6 +26,7 @@
         //    }
         //});
 
+        WinJS.UI.processAll();
 
         $('#inputContainerForm').validate({ // initialize the plugin
             rules: {
@@ -49,7 +50,7 @@
             }
         });
 
-        WinJS.UI.processAll();
+       
 
         //WinJS.Namespace.define("ParkingCharacter", {
         //    radioChanged: WinJS.UI.eventHandler(function (ev) {

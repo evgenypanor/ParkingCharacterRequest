@@ -144,7 +144,7 @@
 
                         </div>
                         <button class="win-button" type="button" onclick="CaptureImage()">Capture</button>
-                        <img id="lisenceImage" width="150" height="150" />
+                        <img class="lisenceImageHiden" id="lisenceImage" width="250" height="250" />
                     </div>
                 </div>
             </fieldset>
@@ -152,15 +152,21 @@
         <div>
             <button id="btnSubmit" class="win-button" type="submit">שלח</button>
         </div>
-        <div data-win-control="WinJS.UI.ContentDialog" data-win-options="{
-             title: '',
+        <div id="savingDialog" data-win-control="WinJS.UI.ContentDialog" data-win-options="{
+             title: 'שומר נתונים...',
              secondaryCommandDisabled : true,
              primaryCommandDisabled : true
         }">
-            Saving...
             <!--<img src="css/images/ajax-loader.gif" />-->
             <img src="css/images/loader-dark.gif" />
             <!--<img src="css/images/loader-light.gif" />-->
+        </div>
+        <div id="dataSavedConfirm" data-win-control="WinJS.UI.ContentDialog" data-win-options="{
+             title: 'נתונים נשמרו בהצלחה',
+             secondaryCommandDisabled : true,
+             primaryCommandDisabled : false,
+             primaryCommandText: 'OK'
+        }">
         </div>
     </form>
     <script>
@@ -178,6 +184,7 @@
         function onSuccess(imageURI) {
             var image = document.getElementById('lisenceImage');
             image.src = "data:image/jpeg;base64," + imageURI;
+            image.className = "lisenceImageVisible";
         }
 
         function onFail(message) {

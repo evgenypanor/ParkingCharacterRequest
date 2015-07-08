@@ -44,7 +44,6 @@
                 }
             },
             submitHandler: function (form) { 
-                alert('valid form submitted');
                 UploadData();
                 return false; // for demo
             }
@@ -155,7 +154,7 @@ function querySubmittedHandler(eventObject) {
 
 function UploadData() {
 
-    var contentDialog = document.querySelector(".win-contentdialog").winControl;
+    var contentDialog = document.querySelector("#savingDialog").winControl;
     contentDialog.show();
 
     var tbl = tlvmobileappClient.getTable("ParkingCharacterDataTBL");
@@ -235,15 +234,16 @@ function UploadData() {
 }
 
 function handleSuccess() {
-    var contentDialog = document.querySelector(".win-contentdialog").winControl;
+    var contentDialog = document.querySelector("#savingDialog").winControl;
     contentDialog.hide();
     //clean up form
-    alert('Data successfully uploaded');
+    var successDialog = document.querySelector("#dataSavedConfirm").winControl;
+    successDialog.show();
     $('#inputContainerForm')[0].reset()
 }
 
 function handleError(error) {
-    var contentDialog = document.querySelector(".win-contentdialog").winControl;
+    var contentDialog = document.querySelector("#savingDialog").winControl;
     contentDialog.hide();
     var text = error + (error.request ? ' - ' + error.request.status : '');
     alert(text);
@@ -279,6 +279,8 @@ function clearCarOwners() {
     document.getElementById("rentalCarDiv").className = "rentalCarDivHidden";
     document.getElementById("ownedByChildDiv").className = "ownedByChildDivHidden";
     document.getElementById("carOwnershipContainer").className = "carOwnershipHidden";
+    document.getElementById("companyCarDiv").className = "lisenceImageHidden";
+    document.getElementById("companyCarDiv").src = "";
 }
 
 function setCarOwners(divId, divClassName) {

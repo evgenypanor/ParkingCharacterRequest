@@ -48,3 +48,11 @@ input {
 .autosuggestDiv {
     width: 80%;
 }
+
+.lisenceImageHiden {
+    display: none;
+}
+
+.lisenceImageVisible {
+    display:block;
+}

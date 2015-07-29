@@ -5,87 +5,45 @@
 (function () {
     "use strict";
 
-    document.addEventListener( 'deviceready', onDeviceReady.bind( this ), false );
+    var app = WinJS.Application;
+    var nav = WinJS.Navigation;
+    var sched = WinJS.Utilities.Scheduler;
+    var ui = WinJS.UI;
 
-    
+    document.addEventListener( 'deviceready', onDeviceReady.bind( this ), false );
 
     function onDeviceReady() {
         // Handle the Cordova pause and resume events
-        document.addEventListener( 'pause', onPause.bind( this ), false );
-        document.addEventListener( 'resume', onResume.bind( this ), false );
-        
-        //$('#inputContainerForm').validate();
+        document.addEventListener('pause', onPause.bind(this), false);
+        document.addEventListener('resume', onResume.bind(this), false);
 
-        //$('#inputContainerForm').submit(function (event) {
-        //    // cancels the form submission
-        //    event.preventDefault();
+        // TODO: Cordova has been loaded. Perform any initialization that requires Cordova here.
+        //WinJS.UI.processAll();
 
-        //    if ($('#inputContainerForm').valid()) {
-        //        //save data
-        //        UploadData();
-        //    }
-        //});
-
-        WinJS.UI.processAll();
-
-        $('#inputContainerForm').validate({ // initialize the plugin
-            rules: {
-                firstName: {
-                    required: true
-                },
-                lastName: {
-                    required: true
-                },
-                tz: {
-                    required: true
-                },
-                homeNum: {
-                    required: true
+        WinJS.UI.processAll().done(function () {
+            WinJS.UI.Pages.define("index.html", {
+                ready: function (element, options) {
+                    //alert("inside init ready");
+                    var listView = document.querySelector("#contenthost").winControl;
+                    WinJS.Navigation.navigate(listView.home);
+                    WinJS.UI.processAll();
                 }
-            },
-            submitHandler: function (form) { 
-                UploadData();
-                return false; // for demo
-            }
+            });
         });
 
-       
+        //nav.history = app.sessionState.history || {};
+        //nav.history.current.initialPlaceholder = true;
 
-        //WinJS.Namespace.define("ParkingCharacter", {
-        //    radioChanged: WinJS.UI.eventHandler(function (ev) {
-        //        var mode = event.target.value;
-        //        ParkingCharacter.updateCarOwnershipView(mode);
-        //    }),
-        //    updateCarOwnershipView: function (mode) {
-        //        switch (mode) {
-        //            case "privateCar":
-        //                ParkingCharacter.clearCarOwners();
-        //                break;
-        //            case "companyCar":
-        //                ParkingCharacter.clearCarOwners();
-        //                ParkingCharacter.setCarOwners("companyCarDiv", "companyCarDivVisible");
-        //                break;
-        //            case "rentalCar":
-        //                ParkingCharacter.clearCarOwners();
-        //                ParkingCharacter.setCarOwners("rentalCarDiv", "carOwnershipVisible");
-        //                break;
-        //            case "ownedByChild":
-        //                ParkingCharacter.clearCarOwners();
-        //                ParkingCharacter.setCarOwners("ownedByChildDiv", "ownedByChildDivVisible");
-        //                break;
-        //        }
-        //    },
-        //    clearCarOwners: function () {
-        //        document.getElementById("companyCarDiv").className = "companyCarDivHidden";
-        //        document.getElementById("rentalCarDiv").className = "rentalCarDivHidden";
-        //        document.getElementById("ownedByChildDiv").className = "ownedByChildDivHidden";
-        //        document.getElementById("carOwnershipContainer").className = "carOwnershipHidden";
-        //    },
-        //    setCarOwners: function (divId, divClassName) {
-        //        document.getElementById(divId).className = divClassName;
-        //    }
-
+        //// Optimize the load of the application and while the splash screen is shown, execute high priority scheduled work.
+        //ui.disableAnimations();
+        //var p = ui.processAll().then(function () {
+        //    return nav.navigate(nav.location || Application.navigator.home, nav.state);
+        //}).then(function () {
+        //    return sched.requestDrain(sched.Priority.aboveNormal + 1);
+        //}).then(function () {
+        //    ui.enableAnimations();
         //});
+
     };
 
     function onPause() {
@@ -95,195 +53,35 @@
     function onResume() {
         // TODO: This application has been reactivated. Restore application state here.
     };
-
-    LoadStreetsData();
 })();
 
 
-//$(document).on("mobileinit", function () {
-//    $.mobile.ignoreContentEnabled = true;
-//});
-
-var viewModel = {};
-
-function LoadStreetsData() {
-
-    $.getJSON("http://tlv-spinfra.cloudapp.net/MobileFacade/AnonimousServices.svc/streets", {})
-      .done(function (data) {
-          viewModel = data.GetStreetsResult;
-          //WinJS.Namespace.define("WinJSCordova.ListView", {
-          //    data: new WinJS.Binding.List(viewModel)
-          //});
-          WinJS.Namespace.define("Sample", {
-                suggestionsRequestedHandler: WinJS.UI.eventHandler(suggestionsRequestedHandler),
-                querySubmittedHandler: WinJS.UI.eventHandler(querySubmittedHandler),
-                resultsuggestionchosenHandler: WinJS.UI.eventHandler(resultsuggestionchosenHandler)
-            });
-          WinJS.UI.processAll();
-      })
-      .fail(function (jqxhr, textStatus, error) {
-          var err = textStatus + ", " + error;
-          //console.log("Request Failed: " + err);
-      });
-}
-
-function resultsuggestionchosenHandler(eventObject) {
-    var queryText = eventObject.detail.queryText;
-    var contentDialog = document.querySelector(".win-autosuggestbox").winControl
-    var aaa = document.querySelector(".win-autosuggestbox-input");
-}
-
-function suggestionsRequestedHandler(eventObject) {
-        var queryText = eventObject.detail.queryText,
-    query = queryText.toLowerCase(),
-    suggestionCollection = eventObject.detail.searchSuggestionCollection;
-    if (queryText.length > 1) {
-        for (var i = 0, len = viewModel.length; i < len; i++) {
-            if (viewModel[i].StreetName.substr(0, query.length).toLowerCase() === query) {
-                suggestionCollection.appendQuerySuggestion(viewModel[i].StreetName);
-            }
-        }
+WinJS.Namespace.define("WinJSCordova.PivotView", {
+    handlers: {
+        selectionchanged: WinJS.UI.eventHandler(pivotSelectionChanged),
+        itemanimationend: WinJS.UI.eventHandler(pivotItemAnimationEnd),
+        itemanimationstart: WinJS.UI.eventHandler(pivotItemAnimationStart)
     }
-}
+});
 
-function querySubmittedHandler(eventObject) {
-     var queryText = eventObject.detail.queryText;
-    var contentDialog = document.querySelector(".win-autosuggestbox").winControl
-    var aaa = document.querySelector(".win-autosuggestbox-input");
-}
+function pivotSelectionChanged(eventInfo) {
+    switch (eventInfo.detail.index) {
+        case 0:
+            //WinJS.Navigation.navigate("AppPages/MainPage/MainPage.html");
 
-function UploadData() {
-
-    var contentDialog = document.querySelector("#savingDialog").winControl;
-    contentDialog.show();
-
-    var tbl = tlvmobileappClient.getTable("ParkingCharacterDataTBL");
-    var jsonRes = [];
-    var itm = {};
-    itm["firstName"] = $("#firstName").val();
-    //jsonRes.push(itm);
-
-    //itm = {}
-    itm["lastName"] = $("#lastName").val();
-    //jsonRes.push(itm);
-
-    //itm = {}
-    itm["tz"] = $("#tz").val();
-    //jsonRes.push(itm);
-
-    //itm = {}
-    itm["carPlate"] = $("#carPlate").val();
-    //jsonRes.push(itm);
-
-    //itm = {}
-    itm["phoneNum"] = $("#phoneNum").val();
-    //jsonRes.push(itm);
-
-    //itm = {}
-    itm["additionalPhoneNum"] = $("#additionalPhoneNum").val();
-    //jsonRes.push(itm);
-
-    //itm = {}
-    itm["email"] = $("#useremail").val();
-    //jsonRes.push(itm);
-
-    //itm = {}
-    itm["arnona"] = $("#arnona").val();
-    //jsonRes.push(itm);
-
-    //itm = {}
-    itm["address"] = $("#address").val();
-    //jsonRes.push(itm);
-
-    //itm = {}
-    itm["homeNum"] = $("#homeNum").val();
-    //jsonRes.push(itm);
-
-    //itm = {}
-    itm["entrance"] = $("#entrance").val();
-    //jsonRes.push(itm);
-
-    //itm = {}
-    itm["appartments"] = $("#appartments").val();
-    //jsonRes.push(itm);
-
-    //itm = {}
-    itm["zip"] = $("#zip").val();
-    //jsonRes.push(itm);
-
-    //itm = {}
-    itm["carOwnership"] = $("input[name=carOwnership]:checked").val();
-    jsonRes.push(itm);
-
-    //itm = {}
-    //itm["lisenceImage"] = $("#lastName").val();
-    //jsonRes.push(itm);
-
-    //itm = {}
-    //itm["lastName"] = $("#lastName").val();
-    //jsonRes.push(itm);
-
-    //itm = {}
-    //itm["lastName"] = $("#lastName").val();
-    //jsonRes.push(itm);
-
-
-
-    //tbl.insert(jsonRes).done(handleSuccess, handleError);
-    tbl.insert(itm).done(handleSuccess, handleError);
-}
-
-function handleSuccess() {
-    var contentDialog = document.querySelector("#savingDialog").winControl;
-    contentDialog.hide();
-    //clean up form
-    var successDialog = document.querySelector("#dataSavedConfirm").winControl;
-    successDialog.show();
-    $('#inputContainerForm')[0].reset()
-}
-
-function handleError(error) {
-    var contentDialog = document.querySelector("#savingDialog").winControl;
-    contentDialog.hide();
-    var text = error + (error.request ? ' - ' + error.request.status : '');
-    alert(text);
-}
-
-function RadioCahngedHandler() {
-    var mode = event.target.value;
-    updateCarOwnershipView(mode);
-}
-
-function updateCarOwnershipView(mode) {
-    switch (mode) {
-        case "privateCar":
-            clearCarOwners();
             break;
-        case "companyCar":
-            clearCarOwners();
-            setCarOwners("companyCarDiv", "companyCarDivVisible");
-            break;
-        case "rentalCar":
-            clearCarOwners();
-            setCarOwners("rentalCarDiv", "carOwnershipVisible");
-            break;
-        case "ownedByChild":
-            clearCarOwners();
-            setCarOwners("ownedByChildDiv", "ownedByChildDivVisible");
+        case 1:
+            //WinJS.Navigation.navigate("AppPages/NewRequestPage/NewRequest.html");
             break;
     }
+    WinJS.UI.processAll();
 }
 
-function clearCarOwners() {
-    document.getElementById("companyCarDiv").className = "companyCarDivHidden";
-    document.getElementById("rentalCarDiv").className = "rentalCarDivHidden";
-    document.getElementById("ownedByChildDiv").className = "ownedByChildDivHidden";
-    document.getElementById("carOwnershipContainer").className = "carOwnershipHidden";
-    document.getElementById("companyCarDiv").className = "lisenceImageHidden";
-    document.getElementById("companyCarDiv").src = "";
+function pivotItemAnimationStart(eventInfo) {
+    //alert("pivotItemAnimationStart");
 }
 
-function setCarOwners(divId, divClassName) {
-    document.getElementById(divId).className = divClassName;
-    document.getElementById("carOwnershipContainer").className = "carOwnershipVisible";
+function pivotItemAnimationEnd(eventInfo) {
+    //alert("pivotItemAnimationEnd");
+    //WinJS.Navigation.navigate("AppPages/MainPage/MainPage.html");
 }

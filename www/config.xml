@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <widget xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:gap="http://phonegap.com/ns/1.0" id="io.cordova.myappfe883a4a1af3418a9e7822941fc41030" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" defaultlocale="en-US">
-  <name>Parking Character Request</name>
+  <name>בקשה לתו חניה</name>
   <description>בקשה לתו חניה</description>
   <author href="http://cordova.io" email="dev@cordova.apache.org">TLV </author>
   <content src="index.html" />

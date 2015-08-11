@@ -8,7 +8,6 @@ var myApp;
 
 // Export selectors engine
 var $$;
-var jq;
 var dataResults = [];
 var viewModel = [];
 
@@ -30,7 +29,7 @@ var viewModel = [];
         // Export selectors engine
         $$ = Dom7;
 
-        jq = jQuery.noConflict();
+        //jq = jQuery.noConflict();
 
         var mainView = myApp.addView('.view-main', {
             // Because we use fixed-through navbar we can enable dynamic navbar
@@ -59,7 +58,7 @@ var viewModel = [];
             alert('init');
             handleLoadStarted();
             alert('before validate');
-            //jq('#inputContainerForm').validate({ // initialize the plugin
+            //$$('#inputContainerForm').validate({ // initialize the plugin
             //    rules: {
             //        firstName: {
             //            required: true
@@ -153,24 +152,37 @@ function LoadStreetsData() {
     alert('inside');
     try
     {
-        jq.getJSON('http://tlv-spinfra.cloudapp.net/MobileFacade/AnonimousServices.svc/streets', {})
-          .done(function (data) {
-              alert('data loaded');
-              viewModel = data.GetStreetsResult;
-              getDropDownList('#streetsSelect', viewModel);
-              alert('options created');
-              //
-              //jq("#address").autocomplete({
-              //    source: viewModel
-              //});
+        $$.getJSON('http://tlv-spinfra.cloudapp.net/MobileFacade/AnonimousServices.svc/streets', {}, function (data, status, xhr)
+        {
+            if(status == '200')
+            {
+                viewModel = data.GetStreetsResult;
+                getDropDownList('#streetsSelect', viewModel);
+            }
+            else
+            {
+                alert('Error loading data');
+            }
+            handleLoadFinished();
+        });
+        //$$.getJSON('http://tlv-spinfra.cloudapp.net/MobileFacade/AnonimousServices.svc/streets', {})
+        //  .done(function (data) {
+        //      alert('data loaded');
+        //      viewModel = data.GetStreetsResult;
+        //      getDropDownList('#streetsSelect', viewModel);
+        //      alert('options created');
+        //      //
+        //      //$$("#address").autocomplete({
+        //      //    source: viewModel
+        //      //});
 
-              handleLoadFinished();
-          })
-          .fail(function (jqxhr, textStatus, error) {
-              var err = textStatus + ", " + error;
-              alert(err);
-              handleLoadFinished();
-          });
+        //      handleLoadFinished();
+        //  })
+        //  .fail(function ($$xhr, textStatus, error) {
+        //      var err = textStatus + ", " + error;
+        //      alert(err);
+        //      handleLoadFinished();
+        //  });
     }
     catch(err)
     {
@@ -179,9 +191,9 @@ function LoadStreetsData() {
 }
 
 function getDropDownList(id, optionList) {
-    var combo = jq(id);
+    var combo = $$(id);
 
-    jq.each(optionList, function (i, el) {
+    $$.each(optionList, function (i, el) {
         combo.append("<option value='" + el.label + "'>" + el.label + "</option>");
     });
 }
@@ -192,21 +204,21 @@ function UploadData() {
     var tbl = tlvmobileappClient.getTable("ParkingCharacterDataTBL");
     //var jsonRes = [];
     var itm = {};
-    itm["firstName"] = jq("#firstName").val();
-    itm["lastName"] = jq("#lastName").val();
-    itm["tz"] = jq("#tz").val();
-    itm["carPlate"] = jq("#carPlate").val();
-    itm["phoneNum"] = jq("#phoneNum").val();
-    itm["additionalPhoneNum"] = jq("#additionalPhoneNum").val();
-    itm["email"] = jq("#useremail").val();
-    itm["arnona"] = jq("#arnona").val();
-    itm["address"] = jq("#address").val();
-    itm["homeNum"] = jq("#homeNum").val();
-    itm["entrance"] = jq("#entrance").val();
-    itm["appartments"] = jq("#appartments").val();
-    itm["zip"] = jq("#zip").val();
-    itm["carOwnership"] = jq("input[name=carOwnership]:checked").val();
-    itm["imgbase64"] = jq("#lisenceImage").src;
+    itm["firstName"] = $$("#firstName").val();
+    itm["lastName"] = $$("#lastName").val();
+    itm["tz"] = $$("#tz").val();
+    itm["carPlate"] = $$("#carPlate").val();
+    itm["phoneNum"] = $$("#phoneNum").val();
+    itm["additionalPhoneNum"] = $$("#additionalPhoneNum").val();
+    itm["email"] = $$("#useremail").val();
+    itm["arnona"] = $$("#arnona").val();
+    itm["address"] = $$("#address").val();
+    itm["homeNum"] = $$("#homeNum").val();
+    itm["entrance"] = $$("#entrance").val();
+    itm["appartments"] = $$("#appartments").val();
+    itm["zip"] = $$("#zip").val();
+    itm["carOwnership"] = $$("input[name=carOwnership]:checked").val();
+    itm["imgbase64"] = $$("#lisenceImage").src;
 
     //jsonRes.push(itm);
     tbl.insert(itm).done(handleSuccess, handleError);

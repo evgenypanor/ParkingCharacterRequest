@@ -148,13 +148,14 @@ function LoadStreetsData() {
 
     $.getJSON("http://tlv-spinfra.cloudapp.net/MobileFacade/AnonimousServices.svc/streets", {})
       .done(function (data) {
+          //alert('data loaded');
           viewModel = data.GetStreetsResult;
 
           getDropDownList('#streetsSelect', viewModel)
-
-          $("#address").autocomplete({
-              source: viewModel
-          });
+          //alert('data loaded');
+          //$("#address").autocomplete({
+          //    source: viewModel
+          //});
 
           handleLoadFinished();
       })

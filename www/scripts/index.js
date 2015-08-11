@@ -55,6 +55,7 @@ var viewModel = [];
 
         myApp.onPageInit('newRequest', function (page) {
             handleLoadStarted();
+            alert('before validate');
             $('#inputContainerForm').validate({ // initialize the plugin
                 rules: {
                     firstName: {
@@ -66,6 +67,7 @@ var viewModel = [];
                     return false;
                 }
             });
+            alert('after validate');
             LoadStreetsData();
         });
 
@@ -148,10 +150,11 @@ function LoadStreetsData() {
 
     $.getJSON("http://tlv-spinfra.cloudapp.net/MobileFacade/AnonimousServices.svc/streets", {})
       .done(function (data) {
-          //alert('data loaded');
+          alert('data loaded');
           viewModel = data.GetStreetsResult;
 
-          getDropDownList('#streetsSelect', viewModel)
+          getDropDownList('#streetsSelect', viewModel);
+          alert('options created');
           //alert('data loaded');
           //$("#address").autocomplete({
           //    source: viewModel

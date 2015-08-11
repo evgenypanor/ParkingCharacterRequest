@@ -1,19 +1,19 @@
 ﻿
 
-WinJS.UI.Pages.define("AppPages/MainPage/MainPage.html", {
-    ready: function (element, options) {
-        handleLoadStarted();
-        LoadTableData(element);
+//WinJS.UI.Pages.define("AppPages/MainPage/MainPage.html", {
+//    ready: function (element, options) {
+//        handleLoadStarted();
+//        LoadTableData(element);
 
-        //handleLoadFinished();
-    },
-    processed: function (element, options) {
-        //handleLoadStarted();
-        //LoadTableData();
-    }
-});
+//        //handleLoadFinished();
+//    },
+//    processed: function (element, options) {
+//        //handleLoadStarted();
+//        //LoadTableData();
+//    }
+//});
 
-
+handleLoadStarted();
 
 var dataResults = [];
 
@@ -32,35 +32,21 @@ function ListViewItemPressed(eventInfo) {
             //if (items.lengt)
             //get id of selected item
             //var itemId = items[0].data.id;
-            WinJS.Navigation.navigate("AppPages/ViewItemPage/ViewItem.html", items[0].data);
+            //WinJS.Navigation.navigate("AppPages/ViewItemPage/ViewItem.html", items[0].data);
         }
     });
-
-
-    //WinJS.Navigation.navigate("");
-
-
-    //var appBar = document.querySelector("#appBar");
-    //appBar.winControl.closedDisplayMode = "full";
-    //appBar.winControl.open();
-}
-x
-function NavigateHere() {
-    WinJS.Navigation.navigate("page.html");
-    WinJS.UI.processAll();
 }
 
 function handleLoadStarted() {
-    var contentDialog = document.querySelector("#loadingDialog").winControl;
-    contentDialog.show();
+    myApp.showPreloader();
+    LoadTableData();
 }
 
 function handleLoadFinished() {
-    var contentDialog = document.querySelector("#loadingDialog").winControl;
-    contentDialog.hide();
+    myApp.hidePreloader();
 }
 
-function LoadTableData(element) {
+function LoadTableData() {
 
     var tbl = tlvmobileappClient.getTable("ParkingCharacterDataTBL");
     tbl.take(50).read().done(function (results) {
@@ -72,7 +58,7 @@ function LoadTableData(element) {
             WinJSCordova.ListView.data.push(item);
         });
 
-        WinJS.Binding.processAll(element, WinJSCordova.ListView).done(function () {
+        WinJS.Binding.processAll(null, WinJSCordova.ListView).done(function () {
             WinJS.UI.processAll().done(function () {
                 var listView = document.querySelector("#listView");
                 listView.winControl.forceLayout();

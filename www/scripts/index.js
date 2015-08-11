@@ -54,6 +54,7 @@ var viewModel = [];
 
 
         myApp.onPageInit('newRequest', function (page) {
+            alert('init');
             handleLoadStarted();
             alert('before validate');
             $('#inputContainerForm').validate({ // initialize the plugin

@@ -149,24 +149,31 @@ function LoadTableData() {
 
 function LoadStreetsData() {
     alert('inside');
-    $.getJSON("http://tlv-spinfra.cloudapp.net/MobileFacade/AnonimousServices.svc/streets", {})
-      .done(function (data) {
-          alert('data loaded');
-          viewModel = data.GetStreetsResult;
-          getDropDownList('#streetsSelect', viewModel);
-          alert('options created');
-          //
-          //$("#address").autocomplete({
-          //    source: viewModel
-          //});
+    try
+    {
+        $.getJSON('http://tlv-spinfra.cloudapp.net/MobileFacade/AnonimousServices.svc/streets', {})
+          .done(function (data) {
+              alert('data loaded');
+              viewModel = data.GetStreetsResult;
+              getDropDownList('#streetsSelect', viewModel);
+              alert('options created');
+              //
+              //$("#address").autocomplete({
+              //    source: viewModel
+              //});
 
-          handleLoadFinished();
-      })
-      .fail(function (jqxhr, textStatus, error) {
-          var err = textStatus + ", " + error;
-          alert(err);
-          handleLoadFinished();
-      });
+              handleLoadFinished();
+          })
+          .fail(function (jqxhr, textStatus, error) {
+              var err = textStatus + ", " + error;
+              alert(err);
+              handleLoadFinished();
+          });
+    }
+    catch(err)
+    {
+        alert('error ' + err.message);
+    }
 }
 
 function getDropDownList(id, optionList) {

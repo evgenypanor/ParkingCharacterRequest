@@ -55,7 +55,7 @@ var viewModel = [];
 
 
         myApp.onPageInit('newRequest', function (page) {
-            alert('init');
+            //alert('init');
             handleLoadStarted();
             alert('before validate');
             //$$('#inputContainerForm').validate({ // initialize the plugin
@@ -69,7 +69,7 @@ var viewModel = [];
             //        return false;
             //    }
             //});
-            alert('after validate');
+            //alert('after validate');
             LoadStreetsData();
         });
 
@@ -149,7 +149,7 @@ function LoadTableData() {
 
 
 function LoadStreetsData() {
-    alert('inside');
+    //alert('inside');
     try
     {
         $$.getJSON('http://tlv-spinfra.cloudapp.net/MobileFacade/AnonimousServices.svc/streets', {}, function (data, status, xhr)

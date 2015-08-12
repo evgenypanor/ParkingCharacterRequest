@@ -16,6 +16,13 @@ var viewModel = [];
 
     document.addEventListener( 'deviceready', onDeviceReady.bind( this ), false );
 
+    try {
+        alert(jQuery);
+    }
+    catch (err) {
+        alert(err.message);
+    }
+
     function onDeviceReady() {
         // Handle the Cordova pause and resume events
         document.addEventListener( 'pause', onPause.bind( this ), false );
@@ -25,6 +32,16 @@ var viewModel = [];
 
         // Initialize your app
         myApp = new Framework7();
+
+        try
+        {
+            alert(jQuery);
+        }
+        catch(err)
+        {
+            alert(err.message);
+        }
+
 
         // Export selectors engine
         $$ = Dom7;
